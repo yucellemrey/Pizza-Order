@@ -1,7 +1,8 @@
 import { FormGroup, Input, Label } from "reactstrap";
+import { useState } from "react";
 
-export default function Toppings() {
-  const toppingIng = [
+export default function Toppings({ setToppingsPrice }) {
+  const toppingIngredients = [
     "Pepperoni",
     "Sosis",
     "Jambon",
@@ -15,6 +16,25 @@ export default function Toppings() {
     "Ricotta",
     "Biber",
   ];
+  const toppingPrices = new Array(toppingIngredients.length).fill(5); // Her topping için 5TL fiyat biçiliyor
+
+  const [selectedToppings, setSelectedToppings] = useState(
+    new Array(toppingIngredients.length).fill(false)
+  ); // Hiç topping bulunmayan bir array oluşturuluyor
+
+  const handleToppingChange = (index) => {
+    const updatedToppings = selectedToppings.map((item, idx) =>
+      idx === index ? !item : item
+    );
+    setSelectedToppings(updatedToppings);
+
+    // Calculate total price
+    const total = updatedToppings.reduce((acc, isSelected, idx) => {
+      return isSelected ? acc + toppingPrices[idx] : acc;
+    }, 0);
+
+    setToppingsPrice(total);
+  };
 
   const containerStyle = {
     display: "flex",
@@ -25,18 +45,23 @@ export default function Toppings() {
   };
 
   const itemStyle = {
-    width: "25%", // Four columns
+    width: "25%",
     marginBottom: "10px",
-    paddingBottom: "10px", // Space between rows
-    paddingRight: "10px", //// Adjust spacing between items
+    paddingBottom: "10px",
+    paddingRight: "10px",
   };
 
   return (
     <div style={containerStyle}>
-      {toppingIng.map((ing, index) => (
+      {toppingIngredients.map((ing, index) => (
         <FormGroup check key={index} style={itemStyle}>
           <Label check>
-            <Input type="checkbox" /> {ing}
+            <Input
+              type="checkbox"
+              checked={selectedToppings[index]}
+              onChange={() => handleToppingChange(index)}
+            />{" "}
+            {ing}
           </Label>
         </FormGroup>
       ))}

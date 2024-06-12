@@ -1,29 +1,38 @@
 import { Table } from "reactstrap";
 
-export default function OrderPricing() {
+export default function OrderPricing({
+  pizzaPrice,
+  toppingsPrice,
+  totalPrice,
+  count,
+}) {
   return (
     <Table>
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th>Sipariş Toplamı</th>
-        </tr>
-      </thead>
       <tbody>
         <tr>
           <th scope="row">Pizza</th>
 
-          <td>Otto</td>
-          <td>@mdo</td>
+          <td></td>
+          <td>
+            {count > 1 ? `${count} x ` : ""} {pizzaPrice} TL
+          </td>
         </tr>
         <tr>
           <th scope="row">Eklenen Malzemeler</th>
 
-          <td>Thornton</td>
-          <td>@fat</td>
+          <td></td>
+          <td>
+            {count > 1 ? `${count} x ` : ""} {toppingsPrice} TL{" "}
+          </td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <th>Toplam</th>
+          <th></th>
+          <th>{totalPrice} TL</th>
+        </tr>
+      </tfoot>
     </Table>
   );
 }

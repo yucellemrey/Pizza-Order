@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 import { Button, Input, InputGroup, InputGroupText } from "reactstrap";
 
-function OrderCount() {
+function OrderCount({ onChange }) {
   const [count, setCount] = useState(1);
 
   const increment = () => {
-    setCount((prevCount) => prevCount + 1);
+    const newCount = count + 1;
+    setCount(newCount);
+    if (onChange) {
+      onChange(newCount);
+    }
   };
 
   const decrement = () => {
-    setCount((prevCount) => Math.max(prevCount - 1, 0)); // Prevents negative numbers
+    if (count > 1) {
+      const newCount = count - 1;
+      setCount(newCount);
+      if (onChange) {
+        onChange(newCount);
+      }
+    }
   };
 
   return (
@@ -18,6 +28,7 @@ function OrderCount() {
         <Button
           onClick={decrement}
           style={{ color: "black", backgroundColor: "#FDC913", border: "none" }}
+          disabled={count === 1}
         >
           -
         </Button>

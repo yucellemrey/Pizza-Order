@@ -4,10 +4,11 @@ export default function Header() {
   const headerStyle = {
     backgroundColor: "#CE2829",
     color: "white",
-    paddingLeft: 0, // Remove padding if any
-    paddingRight: 0, // Remove padding if any
-    margin: 0, // Ensure it sticks to the edge
+    paddingLeft: 0,
+    paddingRight: 0,
+    margin: 0,
     width: "100%",
+    fontFamily: "Roboto Condensed",
   };
 
   const navStyle = {
