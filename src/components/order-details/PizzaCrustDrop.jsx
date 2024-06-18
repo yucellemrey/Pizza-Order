@@ -7,24 +7,40 @@ import {
 } from "reactstrap";
 import PropTypes from "prop-types";
 
-export default function PizzaCrustDrop({ setCrustPrice, direction, ...args }) {
+export default function PizzaCrustDrop({
+  crustSelected,
+  setCrustPrice,
+  direction,
+  ...args
+}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [hamur, setHamur] = useState("Hamur Seçimi");
+  const [hamur, setHamur] = useState("-- Hamur Çeşitleri --");
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   function handleChange(newValue) {
     setHamur(newValue);
-    if (newValue === "İnce Hamur") {
-      setCrustPrice(0);
-    } else if (newValue === "Normal Hamur") {
-      setCrustPrice(10);
-    } else if (newValue === "Kalın Hamur") {
-      setCrustPrice(15);
-    } else if (newValue === "Peynir Kenar (İnce)") {
-      setCrustPrice(25);
-    } else if (newValue === "Peynir Kenar (Normal)") {
-      setCrustPrice(30);
+    crustSelected(newValue); // Invoke the callback with the new value
+    // Set crust price based on selection
+    switch (newValue) {
+      case "İnce Hamur":
+        setCrustPrice(0);
+        break;
+      case "Normal Hamur":
+        setCrustPrice(10);
+        break;
+      case "Kalın Hamur":
+        setCrustPrice(15);
+        break;
+      case "Peynir Kenar (İnce)":
+        setCrustPrice(25);
+        break;
+      case "Peynir Kenar (Normal)":
+        setCrustPrice(30);
+        break;
+      default:
+        // Handle default case if necessary
+        break;
     }
   }
   return (

@@ -1,0 +1,38 @@
+.main-page {
+  background: url('C:\Users\Dell\Wit Pizza Order\Pizza-Order\Assets\mile1-assets\home-banner.png') no-repeat center center; 
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align items towards the start of the flex container */
+  padding-top: 7%; 
+  text-align: center;
+  color: white;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.main-page h1 {
+  margin-bottom: 0.5rem;
+  font-size: 3.5rem; 
+}
+
+.main-page h2 {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: normal;
+}
+
+.order-button {
+  background-color: #FDC913; /* Yellow shade */
+  color: #000;
+  border: none;
+  padding: 10px 30px;
+  font-size: 1rem;
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.order-button:hover {
+  background-color: #E0A800; /* Darker yellow on hover */
+}

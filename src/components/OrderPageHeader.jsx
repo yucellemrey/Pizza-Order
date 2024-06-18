@@ -1,6 +1,7 @@
-import { Nav, NavLink, NavItem } from "reactstrap";
+import { Nav, NavItem } from "reactstrap";
+import { NavLink } from "react-router-dom";
 
-export default function Header() {
+export default function OrderPageHeader() {
   const headerStyle = {
     backgroundColor: "#CE2829",
     color: "white",
@@ -20,6 +21,7 @@ export default function Header() {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    gap: "1em",
   };
 
   return (
@@ -27,12 +29,12 @@ export default function Header() {
       <h2 style={navContainer}>Teknolojik Yemekler</h2>
       <Nav style={navContainer}>
         <NavItem>
-          <NavLink style={navStyle} active href="#">
+          <NavLink to="/" style={navStyle} active href="Anasayfa">
             Anasayfa
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink style={navStyle} href="#">
+          <NavLink to="/order" style={navStyle} href="Sipariş Ver">
             Sipariş Oluştur
           </NavLink>
         </NavItem>

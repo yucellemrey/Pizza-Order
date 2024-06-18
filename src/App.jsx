@@ -1,16 +1,21 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import workintech from "/workintech.svg";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import MainPage from "./components/MainPage";
 import OrderPage from "./components/OrderPage";
-import Header from "./components/Header";
+import OrderComplete from "./components/OrderComplete";
 
-export default function App() {
+function App() {
   return (
-    <div>
-      <Header />
-      <OrderPage />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainPage />} exact />
+        <Route path="/order" element={<OrderPage />} />
+        <Route path="/orderComplete" element={<OrderComplete />} />
+      </Routes>
+    </Router>
   );
 }
+
+export default App;

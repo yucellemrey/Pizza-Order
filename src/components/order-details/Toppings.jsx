@@ -1,7 +1,8 @@
 import { FormGroup, Input, Label } from "reactstrap";
 import { useState } from "react";
 
-export default function Toppings({ setToppingsPrice }) {
+export default function Toppings({ setToppingsPrice, toppingsSelected }) {
+  // Toppings list and prices are assumed to be predefined
   const toppingIngredients = [
     "Pepperoni",
     "Sosis",
@@ -16,11 +17,11 @@ export default function Toppings({ setToppingsPrice }) {
     "Ricotta",
     "Biber",
   ];
-  const toppingPrices = new Array(toppingIngredients.length).fill(5); // Her topping için 5TL fiyat biçiliyor
+  const toppingPrices = new Array(toppingIngredients.length).fill(5);
 
   const [selectedToppings, setSelectedToppings] = useState(
     new Array(toppingIngredients.length).fill(false)
-  ); // Hiç topping bulunmayan bir array oluşturuluyor
+  );
 
   const handleToppingChange = (index) => {
     const updatedToppings = selectedToppings.map((item, idx) =>
@@ -28,12 +29,14 @@ export default function Toppings({ setToppingsPrice }) {
     );
     setSelectedToppings(updatedToppings);
 
-    // Calculate total price
     const total = updatedToppings.reduce((acc, isSelected, idx) => {
       return isSelected ? acc + toppingPrices[idx] : acc;
     }, 0);
 
     setToppingsPrice(total);
+    // Call the passed callback with the count of selected toppings
+    const countSelected = updatedToppings.filter(Boolean).length;
+    toppingsSelected(countSelected);
   };
 
   const containerStyle = {
