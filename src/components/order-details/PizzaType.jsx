@@ -8,8 +8,7 @@ import {
 import PropTypes from "prop-types";
 
 export default function PizzaType({
-  pizzaTypeSelected,
-  setPizzaTypePrice,
+  onChange, // This prop will handle both pizza type and price in the parent component
   direction,
   ...args
 }) {
@@ -18,56 +17,34 @@ export default function PizzaType({
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
+  const prices = {
+    "Margharita Pizza": 130,
+    "4 Peynirli Pizza": 160,
+    "Tavuk & BBQ Pizza": 170,
+    "Akdeniz Pizza": 150,
+    "Vegan Pizza": 110,
+  };
+
   function handleChange(newValue) {
-    setPizzaType(newValue);
-    pizzaTypeSelected(newValue); // Invoke the callback with the new value
-    // Set type price based on selection
-    switch (newValue) {
-      case "Margharita Pizza":
-        setPizzaTypePrice(130);
-        break;
-      case "4 Peynirli Pizza":
-        setPizzaTypePrice(160);
-        break;
-      case "Tavuk & BBQ Pizza":
-        setPizzaTypePrice(170);
-        break;
-      case "Akdeniz Pizza":
-        setPizzaTypePrice(150);
-        break;
-      case "Vegan Pizza":
-        setPizzaTypePrice(110);
-        break;
-      default:
-        // Handle default case if necessary
-        break;
-    }
+    setPizzaType(newValue); // Update local state with the new pizza type
+    onChange(newValue, prices[newValue] || 0); // Send both type and price to parent
   }
+
   return (
     <div>
       <Dropdown
-        onChange={handleChange}
         isOpen={dropdownOpen}
         toggle={toggle}
         direction={direction}
+        {...args}
       >
         <DropdownToggle caret>{pizzaType}</DropdownToggle>
-        <DropdownMenu {...args}>
-          <DropdownItem onClick={() => handleChange("Margharita Pizza")}>
-            Margharita Pizza - 130TL
-          </DropdownItem>
-          <DropdownItem onClick={() => handleChange("4 Peynirli Pizza")}>
-            4 Peynirli Pizza - 160TL
-          </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Tavuk & BBQ Pizza")}>
-            Tavuk & BBQ Pizza - 160TL
-          </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Akdeniz Pizza")}>
-            Akdeniz Pizza - 150TL
-          </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Vegan Pizza")}>
-            Vegan Pizza - 110TL
-          </DropdownItem>
+        <DropdownMenu>
+          {Object.entries(prices).map(([type, price]) => (
+            <DropdownItem key={type} onClick={() => handleChange(type)}>
+              {`${type} - ${price}TL`}
+            </DropdownItem>
+          ))}
         </DropdownMenu>
       </Dropdown>
     </div>
@@ -75,5 +52,6 @@ export default function PizzaType({
 }
 
 PizzaType.propTypes = {
+  onChange: PropTypes.func.isRequired,
   direction: PropTypes.string,
 };

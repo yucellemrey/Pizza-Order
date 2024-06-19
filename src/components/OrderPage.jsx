@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Form,
@@ -19,183 +18,195 @@ import OrderPricing from "./order-details/OrderPricing";
 import PizzaType from "./order-details/PizzaType";
 import OrderPageHeader from "./OrderPageHeader";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function OrderPage() {
-  const formStyle = {
-    padding: "4em 15em ",
-  };
-
+  const formStyle = { padding: "4em 15em" };
   const navigate = useNavigate();
 
-  const goToOrderCompletePage = () => {
-    navigate("/orderComplete"); // Path to your OrderPage
-  };
+  const [formData, setFormData] = useState({
+    sizeChosen: "",
+    crustChosen: "",
+    toppingsChosen: [],
+    noteWritten: "",
+    typeChosen: "",
+    count: 1,
+    pizzaTypePrice: 0,
+    sizePrice: 0,
+    crustPrice: 0,
+    toppingsPrice: 0,
+    totalPrice: 0,
+  });
+  const [errors, setErrors] = useState({});
 
-  const initial = {
-    sizeChosen: false,
-    crustChosen: false,
-    toppingsChosen: false,
-    noteWritten: false,
-    typeChosen: false,
-  };
-
-  const errorMessages = {
-    sizeChosen: "Lütfen pizzanızın boyutunu seçin",
-    crustChosen: "Lütfen pizza hamurunuzu seçin",
-    toppingsChosen: "En az 4, en fazla 10 adet malzeme seçmelisiniz",
-    noteWritten: "Lütfen en az 3 kelimelik bir not ekleyiniz",
-    typeChosen: "Lütfen pizza çeşidini seçiniz",
-  };
-
-  const [pizzaTypePrice, setPizzaTypePrice] = useState(0);
-  const [sizePrice, setSizePrice] = useState(0);
-  const [crustPrice, setCrustPrice] = useState(0);
-  const [toppingsPrice, setToppingsPrice] = useState(0);
-  const [count, setCount] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [errors, setErrors] = useState(initial);
-  const [isValid, setIsValid] = useState(false);
-
+  // Calculate the total price
   useEffect(() => {
+    const { pizzaTypePrice, sizePrice, crustPrice, toppingsPrice, count } =
+      formData;
     const newPrice =
       (pizzaTypePrice + sizePrice + crustPrice + toppingsPrice) * count;
-    setTotalPrice(newPrice);
-  }, [pizzaTypePrice, sizePrice, crustPrice, toppingsPrice, count]);
+    setFormData((prev) => ({ ...prev, totalPrice: newPrice }));
+  }, [
+    formData.pizzaTypePrice,
+    formData.sizePrice,
+    formData.crustPrice,
+    formData.toppingsPrice,
+    formData.count,
+  ]);
 
-  const handleSizeSelected = (selected) => {
-    console.log("Size selected:", selected);
-    setErrors((prev) => ({ ...prev, sizeChosen: selected }));
+  const handleInputChange = (field, value, price = null) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+      ...(price !== null && { [`${field}Price`]: price }), // Conditionally add price if provided
+    }));
+    validateField(field, value); // Still validating here to keep it centralized
   };
 
-  const handleCrustSelected = (selected) => {
-    console.log("Crust selected:", selected);
-    setErrors((prev) => ({ ...prev, crustChosen: selected }));
+  // Validation function
+  const validateField = (field, value) => {
+    let errMsg = "";
+    switch (field) {
+      case "sizeChosen":
+        errMsg = value ? "" : "Lütfen pizza için bir boyut seçiniz.";
+        break;
+      case "crustChosen":
+        errMsg = value ? "" : "Lütfen bir hamur çeşidi seçiniz.";
+        break;
+      case "toppingsChosen":
+        errMsg =
+          value.length >= 4 && value.length <= 10
+            ? ""
+            : "Lütfen en az 4, en fazla 10 adet malzeme ekleyiniz.";
+        break;
+      case "noteWritten":
+        errMsg =
+          value.split(" ").length >= 3
+            ? ""
+            : "Sipariş notunuz en az 3 karakter içermelidir.";
+        break;
+      case "typeChosen":
+        errMsg = value ? "" : "Lütfen pizza çeşidinizi seçiniz.";
+        break;
+      default:
+        break;
+    }
+    setErrors((prev) => ({ ...prev, [field]: errMsg }));
   };
 
-  const handleTypeSelected = (selected) => {
-    console.log("Type selected:", selected);
-    setErrors((prev) => ({ ...prev, typeChosen: selected }));
-  };
-
-  const handleToppingsSelected = (toppingsCount) => {
-    console.log("Toppings count:", toppingsCount);
-    // Assume that valid selection is between 4 and 10 toppings
-    const isValid = toppingsCount >= 4 && toppingsCount <= 10;
-    setErrors((prev) => ({ ...prev, toppingsChosen: isValid }));
-  };
-
-  const handleNoteWritten = (event) => {
-    const note = event.target.value;
-    const isValid = note.length >= 3;
-    setErrors((prev) => ({ ...prev, noteWritten: isValid }));
-  };
-
+  // Check if form is valid
   useEffect(() => {
-    console.log("Current errors state:", errors);
-    const { sizeChosen, crustChosen, toppingsChosen, noteWritten, typeChosen } =
-      errors;
-    setIsValid(
-      sizeChosen && crustChosen && toppingsChosen && noteWritten && typeChosen
-    );
+    const isValid = Object.values(errors).every((errMsg) => errMsg === "");
+    if (isValid !== formData.isValid) {
+      setFormData((prev) => ({ ...prev, isValid }));
+    }
   }, [errors]);
+
+  const goToOrderCompletePage = () => {
+    if (formData.totalPrice > 0 && formData.isValid) {
+      axios
+        .post("https://reqres.in/api/pizza", formData)
+        .then((response) => {
+          console.log("Order response:", response.data);
+          navigate("/orderComplete");
+        })
+        .catch((error) => {
+          console.error("Error submitting order:", error);
+        });
+    } else {
+      console.error("Form is not valid:", errors);
+    }
+  };
+
+  const handlePizzaTypeChange = (type, price) => {
+    // Any specific logic related to pizza type can go here
+    handleInputChange("typeChosen", type, price);
+  };
+
+  const handleToppingsChange = (toppings) => {
+    // Convert toppings from boolean array to list of topping names if needed
+    const selectedToppingNames = toppings
+      .map((isSelected, index) =>
+        isSelected ? toppingIngredients[index] : null
+      )
+      .filter((name) => name !== null);
+
+    handleInputChange("toppingsChosen", selectedToppingNames);
+  };
+
+  const handleCountChange = (newCount) => {
+    // Directly using handleInputChange to update the count
+    handleInputChange("count", newCount);
+  };
 
   return (
     <div>
       <OrderPageHeader />
       <Form style={formStyle}>
         <FormGroup>
-          <h6>Pizza Seçiminizi Yapın:</h6>
-          <PizzaType
-            pizzaTypeSelected={handleTypeSelected}
-            setPizzaTypePrice={setPizzaTypePrice}
-          />
-          {!errors.typeChosen && (
-            <FormFeedback style={{ display: "block" }}>
-              {errorMessages.typeChosen}
-            </FormFeedback>
+          <PizzaType onChange={handlePizzaTypeChange} />
+          {errors.typeChosen && (
+            <FormFeedback>{errors.typeChosen}</FormFeedback>
           )}
         </FormGroup>
         <Row>
           <Col md={6}>
             <FormGroup>
               <PizzaSizeCheck
-                setSizePrice={setSizePrice}
-                sizeSelected={handleSizeSelected}
+                onChange={(size, price) =>
+                  handleInputChange("sizeChosen", size, price)
+                }
               />
-              {!errors.sizeChosen && (
-                <FormFeedback style={{ display: "block" }}>
-                  {errorMessages.sizeChosen}
-                </FormFeedback>
+              {errors.sizeChosen && (
+                <FormFeedback>{errors.sizeChosen}</FormFeedback>
               )}
             </FormGroup>
           </Col>
           <Col md={6}>
             <FormGroup>
-              <h6>Hamur Seçiminizi Yapın:</h6>
               <PizzaCrustDrop
-                setCrustPrice={setCrustPrice}
-                crustSelected={handleCrustSelected}
+                onChange={(type, price) =>
+                  handleInputChange("crustChosen", type, price)
+                }
               />
-              {!errors.crustChosen && (
-                <FormFeedback style={{ display: "block" }}>
-                  {errorMessages.crustChosen}
-                </FormFeedback>
+              {errors.crustChosen && (
+                <FormFeedback>{errors.crustChosen}</FormFeedback>
               )}
             </FormGroup>
           </Col>
         </Row>
         <FormGroup>
-          <Toppings
-            setToppingsPrice={setToppingsPrice}
-            toppingsSelected={handleToppingsSelected}
-          />
-          {!errors.toppingsChosen && (
-            <FormFeedback style={{ display: "block" }}>
-              {errorMessages.toppingsChosen}
-            </FormFeedback>
+          <Toppings onChange={handleToppingsChange} />
+          {errors.toppingsChosen && (
+            <FormFeedback>{errors.toppingsChosen}</FormFeedback>
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="orderNotes">Sipariş Notu</Label>
           <Input
             type="textarea"
             name="orderNotes"
             id="orderNotes"
-            placeholder="Siparişinize eklemek istediğiniz herhangi bir not var mı?"
-            onChange={handleNoteWritten}
+            placeholder="Lütfen sipariş notunuzu giriniz"
+            onChange={(e) => handleInputChange("noteWritten", e.target.value)}
           />
-          {!errors.noteWritten && (
-            <FormFeedback style={{ display: "block" }}>
-              {errorMessages.noteWritten}
-            </FormFeedback>
+          {errors.noteWritten && (
+            <FormFeedback>{errors.noteWritten}</FormFeedback>
           )}
         </FormGroup>
-        <Row>
-          <Col md={4}>
-            <OrderCount onChange={setCount} />
-          </Col>
-          <Col md={8}>
-            <Card>
-              <OrderPricing
-                pizzaPrice={sizePrice + crustPrice + pizzaTypePrice}
-                toppingsPrice={toppingsPrice}
-                totalPrice={totalPrice}
-                count={count}
-              />
-              <Button
-                onClick={goToOrderCompletePage}
-                disabled={!isValid}
-                style={{
-                  color: "black",
-                  backgroundColor: "#FDC913",
-                  border: "none",
-                }}
-              >
-                Sipariş Ver
-              </Button>
-            </Card>
-          </Col>
-        </Row>
+        <OrderCount onChange={handleCountChange} />
+        <OrderPricing
+          totalPrice={formData.totalPrice}
+          pizzaPrice={formData.pizzaTypePrice}
+          toppingsPrice={formData.toppingsPrice}
+          count={formData.count}
+        />
+        <Button
+          onClick={goToOrderCompletePage}
+          disabled={!formData.isValid}
+          style={{ color: "black", backgroundColor: "#FDC913", border: "none" }}
+        >
+          Place Order
+        </Button>
       </Form>
     </div>
   );
