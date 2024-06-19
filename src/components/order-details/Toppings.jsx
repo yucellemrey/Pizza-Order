@@ -2,7 +2,6 @@ import { FormGroup, Input, Label } from "reactstrap";
 import { useState } from "react";
 
 export default function Toppings({ onChange }) {
-  // Toppings list is assumed to be predefined
   const toppingIngredients = [
     "Pepperoni",
     "Sosis",
@@ -17,28 +16,19 @@ export default function Toppings({ onChange }) {
     "Ricotta",
     "Biber",
   ];
+  const toppingPrices = new Array(toppingIngredients.length).fill(5);
 
-  const [selectedToppings, setSelectedToppings] = useState(
-    new Array(toppingIngredients.length).fill(false)
-  );
+  const [selectedToppings, setSelectedToppings] = useState([]);
 
-  const handleToppingChange = (index) => {
-    const updatedToppings = selectedToppings.map((item, idx) =>
-      idx === index ? !item : item
-    );
+  const handleToppingChange = (ingredient) => {
+    const updatedToppings = selectedToppings.includes(ingredient)
+      ? selectedToppings.filter((item) => item !== ingredient)
+      : [...selectedToppings, ingredient];
+
     setSelectedToppings(updatedToppings);
 
-    // Create an array of selected toppings based on true/false values
-    const selectedToppingNames = updatedToppings.reduce(
-      (acc, isSelected, idx) => {
-        if (isSelected) acc.push(toppingIngredients[idx]);
-        return acc;
-      },
-      []
-    );
-
-    // Pass the selected toppings names to the parent component
-    onChange(selectedToppingNames);
+    const total = updatedToppings.length * 5; // Assuming each topping costs 5
+    onChange(updatedToppings, total);
   };
 
   const containerStyle = {
@@ -63,8 +53,8 @@ export default function Toppings({ onChange }) {
           <Label check>
             <Input
               type="checkbox"
-              checked={selectedToppings[index]}
-              onChange={() => handleToppingChange(index)}
+              checked={selectedToppings.includes(ing)}
+              onChange={() => handleToppingChange(ing)}
             />{" "}
             {ing}
           </Label>

@@ -7,18 +7,14 @@ function OrderCount({ onChange }) {
   const increment = () => {
     const newCount = count + 1;
     setCount(newCount);
-    if (onChange) {
-      onChange(newCount);
-    }
+    onChange(newCount);
   };
 
   const decrement = () => {
     if (count > 1) {
       const newCount = count - 1;
       setCount(newCount);
-      if (onChange) {
-        onChange(newCount);
-      }
+      onChange(newCount);
     }
   };
 

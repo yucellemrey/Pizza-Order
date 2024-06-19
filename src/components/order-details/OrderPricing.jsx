@@ -11,7 +11,6 @@ export default function OrderPricing({
       <tbody>
         <tr>
           <th scope="row">Pizza</th>
-
           <td></td>
           <td>
             {count > 1 ? `${count} x ` : ""} {pizzaPrice} TL
@@ -19,7 +18,6 @@ export default function OrderPricing({
         </tr>
         <tr>
           <th scope="row">Eklenen Malzemeler</th>
-
           <td></td>
           <td>
             {count > 1 ? `${count} x ` : ""} {toppingsPrice} TL{" "}

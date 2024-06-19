@@ -8,6 +8,18 @@
   justify-content: flex-start; /* Align items towards the start of the flex container */
   padding-top: 7%; 
   text-align: center;
-  color: white;
+  color: #FAF7F2;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.order-complete-card{
+  background-color: #CE2829;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align items towards the start of the flex container */
+  text-align: center;
+  color: #FAF7F2;
   font-family: 'Roboto Condensed', sans-serif;
 }

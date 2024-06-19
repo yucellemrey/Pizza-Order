@@ -1,14 +1,6 @@
 import { useState } from "react";
 import { FormGroup, Input, Label, Col } from "reactstrap";
 
-const pizzaSizeCheckStyleHeader = {
-  display: "flex",
-  justifyContent: "flex-start",
-  alignItems: "flex-start",
-  fontSize: "22px",
-  fontWeight: "bold",
-};
-
 export default function PizzaSizeCheck({ onChange }) {
   const [selectedSize, setSelectedSize] = useState("");
 
@@ -20,32 +12,50 @@ export default function PizzaSizeCheck({ onChange }) {
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
-    // Invoke the onChange function from the parent component with the size and price
     onChange(size, sizePrices[size]);
   };
 
   return (
     <div>
       <FormGroup>
-        <legend style={pizzaSizeCheckStyleHeader}>Boyut Seçimi</legend>
+        <legend>
+          Boyut Seçimi
+          <span style={{ color: "red" }}> *</span>
+        </legend>
         <Col sm={10}>
-          {["small", "medium", "large"].map((size) => (
-            <FormGroup check key={size}>
-              <Label check>
-                <Input
-                  name="radioSize"
-                  type="radio"
-                  onChange={() => handleSizeChange(size)}
-                  checked={selectedSize === size}
-                />
-                {size === "small"
-                  ? "Küçük Boy"
-                  : size === "medium"
-                  ? "Orta Boy"
-                  : "Büyük Boy"}
-              </Label>
-            </FormGroup>
-          ))}
+          <FormGroup check>
+            <Label check>
+              <Input
+                name="radioSize"
+                type="radio"
+                onChange={() => handleSizeChange("small")}
+                checked={selectedSize === "small"}
+              />
+              Küçük Boy
+            </Label>
+          </FormGroup>
+          <FormGroup check>
+            <Label check>
+              <Input
+                name="radioSize"
+                type="radio"
+                onChange={() => handleSizeChange("medium")}
+                checked={selectedSize === "medium"}
+              />
+              Orta Boy
+            </Label>
+          </FormGroup>
+          <FormGroup check>
+            <Label check>
+              <Input
+                name="radioSize"
+                type="radio"
+                onChange={() => handleSizeChange("large")}
+                checked={selectedSize === "large"}
+              />
+              Büyük Boy
+            </Label>
+          </FormGroup>
         </Col>
       </FormGroup>
     </div>
