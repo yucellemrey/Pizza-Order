@@ -48,6 +48,10 @@ export default function Toppings({ onChange }) {
 
   return (
     <div style={containerStyle}>
+      <legend style={{ paddingBottom: "15px" }}>
+        Ekstra Malzemeler:
+        <span style={{ color: "red" }}> *</span>
+      </legend>
       {toppingIngredients.map((ing, index) => (
         <FormGroup check key={index} style={itemStyle}>
           <Label check>

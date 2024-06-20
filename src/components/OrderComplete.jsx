@@ -21,19 +21,19 @@ export default function OrderComplete() {
           <strong>Boyut:</strong> {size}
         </p>
         <p>
-          <strong>Hamur:</strong> {crust}
+          <strong>Hamur Seçimi:</strong> {crust}
         </p>
         <p>
-          <strong>Malzemeler:</strong> {toppings && toppings.join(", ")}
+          <strong>Ek Malzemeler:</strong> {toppings && toppings.join(", ")}
         </p>
         <p>
-          <strong>Not:</strong> {note}
+          <strong>Sipariş Notu:</strong> {note}
         </p>
         <p>
           <strong>Adet:</strong> {quantity}
         </p>
         <p>
-          <strong>Toplam Fiyat:</strong> {totalPrice} TL
+          <strong>Sipariş Toplamı:</strong> {totalPrice} TL
         </p>
       </Card>
     </div>
