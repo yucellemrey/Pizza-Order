@@ -44,22 +44,37 @@ export default function PizzaCrustDrop({ onChange }) {
         Hamur Çeşidi:
         <span style={{ color: "red" }}> *</span>
       </legend>
-      <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+      <Dropdown isOpen={dropdownOpen} toggle={toggle} data-cy="pizzaCrustDrop">
         <DropdownToggle caret>{crust}</DropdownToggle>
         <DropdownMenu>
-          <DropdownItem onClick={() => handleChange("İnce Hamur")}>
+          <DropdownItem
+            onClick={() => handleChange("İnce Hamur")}
+            data-cy={`pizzaCrust${1}`}
+          >
             İnce Hamur
           </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Normal Hamur")}>
+          <DropdownItem
+            onClick={() => handleChange("Normal Hamur")}
+            data-cy={`pizzaCrust${2}`}
+          >
             Normal Hamur - 10TL
           </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Kalın Hamur")}>
+          <DropdownItem
+            onClick={() => handleChange("Kalın Hamur")}
+            data-cy={`pizzaCrust${3}`}
+          >
             Kalın Hamur - 15TL
           </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Peynir Kenar (İnce)")}>
+          <DropdownItem
+            onClick={() => handleChange("Peynir Kenar (İnce)")}
+            data-cy={`pizzaCrust${4}`}
+          >
             Peynir Kenar (İnce) - 25TL
           </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Peynir Kenar (Normal)")}>
+          <DropdownItem
+            onClick={() => handleChange("Peynir Kenar (Normal)")}
+            data-cy={`pizzaCrust${5}`}
+          >
             Peynir Kenar (Normal) - 30TL
           </DropdownItem>
         </DropdownMenu>

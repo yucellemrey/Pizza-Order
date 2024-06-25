@@ -27,7 +27,7 @@ export default function Toppings({ onChange }) {
 
     setSelectedToppings(updatedToppings);
 
-    const total = updatedToppings.length * 5; // Assuming each topping costs 5
+    const total = updatedToppings.length * 5;
     onChange(updatedToppings, total);
   };
 
@@ -56,6 +56,7 @@ export default function Toppings({ onChange }) {
         <FormGroup check key={index} style={itemStyle}>
           <Label check>
             <Input
+              data-cy={`topping-${index}`}
               type="checkbox"
               checked={selectedToppings.includes(ing)}
               onChange={() => handleToppingChange(ing)}

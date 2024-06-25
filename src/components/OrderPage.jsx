@@ -81,7 +81,6 @@ export default function OrderPage() {
         break;
     }
     setErrors((prev) => ({ ...prev, [field]: errMsg }));
-    console.log(`Validation: ${field} = ${value}, Error: ${errMsg}`);
   };
 
   useEffect(() => {
@@ -161,7 +160,10 @@ export default function OrderPage() {
             <FormGroup>
               <PizzaType onChange={handleTypeSelected} />
               {errors.typeChosen && (
-                <FormFeedback style={{ display: "block", color: "red" }}>
+                <FormFeedback
+                  data-cy="orderTypeError"
+                  style={{ display: "block", color: "red" }}
+                >
                   {errors.typeChosen}
                 </FormFeedback>
               )}
@@ -171,7 +173,10 @@ export default function OrderPage() {
             <FormGroup>
               <PizzaSizeCheck onChange={handleSizeSelected} />
               {errors.sizeChosen && (
-                <FormFeedback style={{ display: "block", color: "red" }}>
+                <FormFeedback
+                  data-cy="orderSizeError"
+                  style={{ display: "block", color: "red" }}
+                >
                   {errors.sizeChosen}
                 </FormFeedback>
               )}
@@ -181,7 +186,10 @@ export default function OrderPage() {
             <FormGroup>
               <PizzaCrustDrop onChange={handleCrustSelected} />
               {errors.crustChosen && (
-                <FormFeedback style={{ display: "block", color: "red" }}>
+                <FormFeedback
+                  data-cy="orderCrustError"
+                  style={{ display: "block", color: "red" }}
+                >
                   {errors.crustChosen}
                 </FormFeedback>
               )}
@@ -194,7 +202,10 @@ export default function OrderPage() {
             <FormGroup>
               <Toppings onChange={handleToppingsSelected} />
               {errors.toppingsChosen && (
-                <FormFeedback style={{ display: "block", color: "red" }}>
+                <FormFeedback
+                  data-cy="orderToppingsError"
+                  style={{ display: "block", color: "red" }}
+                >
                   {errors.toppingsChosen}
                 </FormFeedback>
               )}
@@ -211,11 +222,15 @@ export default function OrderPage() {
                 type="textarea"
                 name="orderNotes"
                 id="orderNotes"
+                data-cy="orderNotes"
                 placeholder="Siparişinize eklemek istediğiniz herhangi bir not var mı?"
                 onChange={handleNoteWritten}
               />
               {errors.noteWritten && (
-                <FormFeedback style={{ display: "block", color: "red" }}>
+                <FormFeedback
+                  data-cy="orderNoteError"
+                  style={{ display: "block", color: "red" }}
+                >
                   {errors.noteWritten}
                 </FormFeedback>
               )}
@@ -246,6 +261,7 @@ export default function OrderPage() {
             <Button
               onClick={goToOrderCompletePage}
               disabled={!isValid}
+              data-cy="orderButton"
               style={{
                 color: "black",
                 backgroundColor: "#FDC913",

@@ -23,13 +23,14 @@ export default function PizzaSizeCheck({ onChange }) {
           <span style={{ color: "red" }}> *</span>
         </legend>
         <Col sm={10}>
-          <FormGroup check>
+          <FormGroup check data-cy="pizzaSize">
             <Label check>
               <Input
                 name="radioSize"
                 type="radio"
                 onChange={() => handleSizeChange("small")}
                 checked={selectedSize === "small"}
+                data-cy="radioSizeSmall"
               />
               Küçük Boy
             </Label>
@@ -41,6 +42,7 @@ export default function PizzaSizeCheck({ onChange }) {
                 type="radio"
                 onChange={() => handleSizeChange("medium")}
                 checked={selectedSize === "medium"}
+                data-cy="radioSizeMedium"
               />
               Orta Boy
             </Label>
@@ -52,6 +54,7 @@ export default function PizzaSizeCheck({ onChange }) {
                 type="radio"
                 onChange={() => handleSizeChange("large")}
                 checked={selectedSize === "large"}
+                data-cy="radioSizeLarge"
               />
               Büyük Boy
             </Label>

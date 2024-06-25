@@ -44,22 +44,37 @@ export default function PizzaType({ onChange }) {
         Pizza Çeşidi:
         <span style={{ color: "red" }}> *</span>
       </legend>
-      <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+      <Dropdown isOpen={dropdownOpen} toggle={toggle} data-cy="pizzaTypeDrop">
         <DropdownToggle caret>{pizzaType}</DropdownToggle>
         <DropdownMenu>
-          <DropdownItem onClick={() => handleChange("Margharita Pizza")}>
+          <DropdownItem
+            onClick={() => handleChange("Margharita Pizza")}
+            data-cy={`pizzaType${1}`}
+          >
             Margharita Pizza - 130TL
           </DropdownItem>
-          <DropdownItem onClick={() => handleChange("4 Peynirli Pizza")}>
+          <DropdownItem
+            onClick={() => handleChange("4 Peynirli Pizza")}
+            data-cy={`pizzaType${2}`}
+          >
             4 Peynirli Pizza - 160TL
           </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Tavuk & BBQ Pizza")}>
+          <DropdownItem
+            onClick={() => handleChange("Tavuk & BBQ Pizza")}
+            data-cy={`pizzaType${3}`}
+          >
             Tavuk & BBQ Pizza - 170TL
           </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Akdeniz Pizza")}>
+          <DropdownItem
+            onClick={() => handleChange("Akdeniz Pizza")}
+            data-cy={`pizzaType${4}`}
+          >
             Akdeniz Pizza - 150TL
           </DropdownItem>
-          <DropdownItem onClick={() => handleChange("Vegan Pizza")}>
+          <DropdownItem
+            onClick={() => handleChange("Vegan Pizza")}
+            data-cy={`pizzaType${5}`}
+          >
             Vegan Pizza - 110TL
           </DropdownItem>
         </DropdownMenu>
