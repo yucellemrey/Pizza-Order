@@ -35,7 +35,7 @@ export default function PizzaCrustDrop({ onChange }) {
       default:
         break;
     }
-    onChange(newValue, price); // Call the onChange prop with the selected value and price
+    onChange(newValue, price);
   }
 
   return (

@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
-import "./MainPage.css"; // Assuming you will use a separate CSS file for styles
+import "./MainPage.css"; 
 
 export default function MainPage() {
   const navigate = useNavigate();
 
   const goToOrderPage = () => {
-    navigate("/order"); // Path to your OrderPage
+    navigate("/order"); 
   };
 
   return (

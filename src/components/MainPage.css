@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align items towards the start of the flex container */
+  justify-content: flex-start; 
   padding-top: 7%; 
   text-align: center;
   color: white;
@@ -24,7 +24,7 @@
 }
 
 .order-button {
-  background-color: #FDC913; /* Yellow shade */
+  background-color: #FDC913;
   color: #000;
   border: none;
   padding: 10px 30px;
@@ -34,5 +34,5 @@
 }
 
 .order-button:hover {
-  background-color: #E0A800; /* Darker yellow on hover */
+  background-color: #E0A800; 
 }
